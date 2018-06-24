@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 import sys
 import time
 from datetime import datetime
 from influxdb import InfluxDBClient
 import Adafruit_DHT
 
-if sys.argv:
-    LOCATION = sys.argv[0]
+if len(sys.argv) > 1:
+    LOCATION = sys.argv[1]
 else:
     LOCATION = 'basement'
 print("using", LOCATION, "as location")
