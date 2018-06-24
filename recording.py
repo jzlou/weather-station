@@ -8,6 +8,7 @@ if sys.argv:
     LOCATION = sys.argv[0]
 else:
     LOCATION = 'basement'
+print("using", LOCATION, "as location")
 
 CLIENT = InfluxDBClient(host="localhost", port=8086)
 CLIENT.switch_database("weather")
@@ -15,8 +16,7 @@ CLIENT.switch_database("weather")
 SENSOR = Adafruit_DHT.DHT22
 PIN = 22
 
-
-while True:
+def write_point():
     humidity, temperature = Adafruit_DHT.read_retry(SENSOR, PIN)
     print("Temperature:", temperature, "Humidity:", humidity)
     measurement_json = [
@@ -33,5 +33,8 @@ while True:
             }
         ]
     CLIENT.write_points(measurement_json)
+
+while True:
+    write_point()
     print("Wrote data to tsdb")
     time.sleep(60)
