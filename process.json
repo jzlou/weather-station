@@ -1,7 +1,7 @@
 {
     "apps": [{
         "name": "recorder",
-        "script": "./recorder.py",
+        "script": "./recording.py",
         "watch": true,
         "args": "dandelions",
         "interpreter": "/usr/bin/python3"
