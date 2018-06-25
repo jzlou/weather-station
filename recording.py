@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Simple logging weather station logic"""
 import sys
 import time
 from datetime import datetime
@@ -18,6 +19,7 @@ SENSOR = Adafruit_DHT.DHT22
 PIN = 22
 
 def write_point():
+    """Writes the point to influx"""
     humidity, temperature = Adafruit_DHT.read_retry(SENSOR, PIN)
     print("Temperature:", temperature, "Humidity:", humidity)
     measurement_json = [
