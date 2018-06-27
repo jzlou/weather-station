@@ -28,7 +28,7 @@ def write_point():
     if humidity > 100 or humidity < 0:
         raise ValueError("Sensor humidity out of range")
     if temperature > 75 or temperature < 0:
-        raise ValueError("Something is horribly wrong with the temperature sensor")
+        raise ValueError("Nonsensical value from temperature sensor")
     measurement_json = [
         {
             "measurement": "weather",
@@ -49,6 +49,6 @@ while True:
     try:
         write_point()
     except Exception:
-        raise RuntimeError("Failed to write point to DB")
+        raise RuntimeError("Failed in main loop")
     print("Wrote data to tsdb")
     time.sleep(60)
