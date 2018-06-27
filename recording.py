@@ -11,7 +11,7 @@ if len(sys.argv) > 1:
     LOCATION = sys.argv[1]
 else:
     LOCATION = 'basement'
-logging.info("using", LOCATION, "as location")
+logging.info("using %s as location", LOCATION)
 
 CLIENT = InfluxDBClient(host="localhost", port=8086)
 CLIENT.switch_database("weather")
@@ -19,10 +19,15 @@ CLIENT.switch_database("weather")
 SENSOR = Adafruit_DHT.DHT22
 PIN = 22
 
+
 def write_point():
     """Writes the point to influx"""
     humidity, temperature = Adafruit_DHT.read_retry(SENSOR, PIN)
-    logging.info("Recording temp:", temperature, "hum:", humidity)
+    logging.info("Recording temp: %s, hum: %s", temperature, humidity)
+    if humidity > 100 or humidity < 0:
+        raise ValueError("Humidity out of range")
+    if temperature > 75 or temperature < 0:
+        raise ValueError("Something is horribly wrong with the temperature")
     measurement_json = [
         {
             "measurement": "weather",
@@ -38,10 +43,11 @@ def write_point():
         ]
     CLIENT.write_points(measurement_json)
 
+
 while True:
     try:
         write_point()
-    except:
-        logging.warning("Something bad happened at", datetime.now().toString())
+    except Exception:
+        raise RuntimeError("Failed to write point to DB")
     print("Wrote data to tsdb")
     time.sleep(60)
