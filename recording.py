@@ -13,6 +13,7 @@ else:
     LOCATION = 'basement'
 logging.info("using %s as location", LOCATION)
 
+# Eventually this becomes environmentally read
 CLIENT = InfluxDBClient(host="localhost", port=8086)
 CLIENT.switch_database("weather")
 
@@ -25,9 +26,9 @@ def write_point():
     humidity, temperature = Adafruit_DHT.read_retry(SENSOR, PIN)
     logging.info("Recording temp: %s, hum: %s", temperature, humidity)
     if humidity > 100 or humidity < 0:
-        raise ValueError("Humidity out of range")
+        raise ValueError("Sensor humidity out of range")
     if temperature > 75 or temperature < 0:
-        raise ValueError("Something is horribly wrong with the temperature")
+        raise ValueError("Something is horribly wrong with the temperature sensor")
     measurement_json = [
         {
             "measurement": "weather",
