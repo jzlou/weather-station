@@ -12,6 +12,7 @@ DARKSKY_URL = "https://api.darksky.net/forecast/"
 DARKSKY_TOKEN = os.environ["DARKSKY_TOKEN"]
 LAT_LONG = os.environ["LAT_LONG"]
 
+
 def get_datasets():
     """
     test
@@ -20,6 +21,7 @@ def get_datasets():
     response = requests.get(url)
     resp_json = response.json()
     print(json.dumps(resp_json, indent=2))
+
 
 if __name__ == "__main__":
     get_datasets()
