@@ -4,8 +4,9 @@ import sys
 import time
 import logging
 from datetime import datetime
-from influxdb import InfluxDBClient
 import Adafruit_DHT
+import pika
+import json
 
 if len(sys.argv) > 1:
     LOCATION = sys.argv[1]
@@ -13,9 +14,12 @@ else:
     LOCATION = 'basement'
 logging.info("using %s as location", LOCATION)
 
-# Eventually this becomes environmentally read
-CLIENT = InfluxDBClient(host="localhost", port=8086)
-CLIENT.switch_database("weather")
+CONNECTION = pika.BlockingConnection(pika.ConnectionParameters(
+    host='lecole',
+    port=8086
+))
+CHANNEL = CONNECTION.channel()
+CHANNEL.queue_declare(queue='scribe')
 
 SENSOR = Adafruit_DHT.DHT22
 PIN = 22
@@ -29,8 +33,7 @@ def write_point():
         raise ValueError("Sensor humidity out of range")
     if temperature > 75 or temperature < 0:
         raise ValueError("Nonsensical value from temperature sensor")
-    measurement_json = [
-        {
+    measurement = {
             "measurement": "weather",
             "tags": {
                 "location": LOCATION
@@ -41,8 +44,9 @@ def write_point():
                 "temperature": temperature
                 }
             }
-        ]
-    CLIENT.write_points(measurement_json)
+    CHANNEL.basic_publish(exchange='',
+                          routing_key='scribe',
+                          body=json.dumps(measurement))
 
 
 while True:
