@@ -1,27 +1,48 @@
 #!/usr/bin/python3
 '''
-get hourly data from darksky
+Interact with darksky API
 '''
 
 import os
-import json
 from time import time
+import asyncio
 import requests
 
 DARKSKY_URL = "https://api.darksky.net/forecast/"
 DARKSKY_TOKEN = os.environ["DARKSKY_TOKEN"]
 LAT_LONG = os.environ["LAT_LONG"]
 
+async def async_query(t_epoch, excludes=None):
+>>>>>>> wip, save
+    """
+    Query darksky API for data and respond asynchronously
 
-def get_datasets():
+    :param t_epoch: (int) seconds since epoch
+    :param excludes: (list<string>) list of exclude blocks
+    :return: (json) response
     """
-    test
+    url = DARKSKY_URL + DARKSKY_TOKEN + "/" + LAT_LONG + "," + str(t_epoch)
+    if excludes:
+        url += "?excludes="
+        for exclude in excludes:
+            url += exclude
+    await requests.get(url).json()
+
+def query(t_epoch, excludes=None):
     """
-    url = DARKSKY_URL + DARKSKY_TOKEN + "/" + LAT_LONG + "," + int(time())
-    response = requests.get(url)
-    resp_json = response.json()
-    print(json.dumps(resp_json, indent=2))
+    Query darksky API for data
+
+    :param t_epoch: (int) seconds since epoch
+    :param excludes: (list<string>) list of exclude blocks
+    :return: (json) response
+    """
+    url = DARKSKY_URL + DARKSKY_TOKEN + "/" + LAT_LONG + "," + str(t_epoch)
+    if excludes:
+        url += "?excludes="
+        for exclude in excludes:
+            url += exclude
+    return requests.get(url).json()
 
 
 if __name__ == "__main__":
-    get_datasets()
+    print(query(int(time()))["minutely"]["summary"])
