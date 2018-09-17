@@ -16,7 +16,7 @@ logging.info("using %s as location", LOCATION)
 
 CONNECTION = pika.BlockingConnection(pika.ConnectionParameters(
     host='lecole',
-    port=8086
+    port=5672
 ))
 CHANNEL = CONNECTION.channel()
 CHANNEL.queue_declare(queue='scribe')
