@@ -38,7 +38,7 @@ def write_point():
             "tags": {
                 "location": LOCATION
                 },
-            "time": datetime.now(),
+            "time": datetime.now().isoformat(),
             "fields": {
                 "humidity": humidity,
                 "temperature": temperature
