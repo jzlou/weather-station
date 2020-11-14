@@ -11,7 +11,7 @@ load_dotenv()
 
 sleep_interval = 3 * 60
 exception_interval = 60 * 60
-location = os.getenv("LOCATION") || "Unknown"
+location = os.getenv("LOCATION")
 print(f"using {location} as location")
 
 api_key = os.getenv("THINGSPEAK_API_KEY")
