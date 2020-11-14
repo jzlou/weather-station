@@ -1,0 +1,18 @@
+$ /urs/bin/python                                                                                                                                                             
+session=session                                                                                                                                                           
+    File "/usr/lib/python3.7/ssl.py", line 853, in _create
+self.do_handshake()
+    File "/usr/lib/python3.7/ssl.py", line 1117, in do_handshake
+self._sslobj.do_handshake()
+    ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1056)
+
+    During handling of the above exception, another exception occurred:
+
+    Traceback (most recent call last):
+        File "/home/pi/.local/lib/python3.7/site-packages/requests/adapters.py", line 449, in send
+        timeout=timeout
+    File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 638, in urlopen
+        _stacktrace=sys.exc_info()[2])
+    File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 398, in increment
+        raise MaxRetryError(_pool, url, error or ResponseError(cause))
+        urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.thingspeak.com', port=443): Max retries exceeded with url: /update?api_key=REDACTED&field1=69.2600013$329102&field2=67.5999984741211 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1$56)')))

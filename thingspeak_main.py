@@ -39,7 +39,7 @@ def write_point_wait():
     r = requests.get(url)
     print(f"Status code: {r.status_code}")
 
-    time.sleep(60)
+    time.sleep(3 * 60)
 
 
 if __name__ == "__main__":
